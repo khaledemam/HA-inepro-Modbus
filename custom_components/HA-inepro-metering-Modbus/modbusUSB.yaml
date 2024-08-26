@@ -1,8 +1,8 @@
 --- # ---------------------------USB/Serial--------------------------------------
-# Created by https://github.com/StealthChesnut/HA-FoxESS-Modbus
-# Modbus Config for Fox ESS Hybrid H1 Inverter
+# Created by https://github.com/khaledemam/HA-inepro-Modbus/
+# Modbus Config for inepro meter PRO380
 # Adjust port setting to match USB port in use
-# "slave" setting can be changed on Inverter Menu - Settings, Communication, RS485 but is default to 247 from factory
+# "modbus ID" setting can be changed on meter Menu - Settings, Communication, RS485 but is default to 1 from factory
 
   # ---------------------------------------------------------------------------
 

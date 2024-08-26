@@ -13,5 +13,5 @@
 
 
 modbus: !include custom_components/HA-inepro-metering-Modbus/modbusUSB.yaml
-modbus: !include custom_components/HA-inepro-metering-Modbus/modbusLAN.yaml
+# modbus: !include custom_components/HA-inepro-metering-Modbus/modbusLAN.yaml
 

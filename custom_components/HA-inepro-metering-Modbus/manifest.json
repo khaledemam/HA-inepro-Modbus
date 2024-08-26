@@ -1,6 +1,6 @@
 {
-    "domain": "modbus",
-    "name": "inepro metering Modbus Integration",
+    "domain": "inepro_modbus",  // Changed to a more specific and unique domain name
+    "name": "Inepro Metering Modbus Integration",
     "documentation": "https://github.com/khaledemam/HA-inepro-Modbus/",
     "issue_tracker": "https://github.com/khaledemam/HA-inepro-Modbus/issues",
     "dependencies": [],
@@ -8,4 +8,4 @@
     "requirements": [],
     "iot_class": "local_polling",
     "version": "1.0.0"
-  }
+}

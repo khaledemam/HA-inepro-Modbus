@@ -4,14 +4,6 @@
 # Adjust port setting to match USB port in use
 # "slave" setting can be changed on Inverter Menu - Settings, Communication, RS485 but is default to 247 from factory
 
-- name: FoxESSInverterModbus
-  type: serial
-  baudrate: 9600
-  bytesize: 8
-  method: rtu
-  parity: N
-  port: /dev/ttyUSB0
-  stopbits: 1
   # ---------------------------------------------------------------------------
 
   # ---------------------------WIFI/LAN----------------------------------------
@@ -23,398 +15,422 @@
   #  port: 502
   # ---------------------------------------------------------------------------
 
+- name: PRO380-MOD
+  type: serial
+  baudrate: 9600
+  bytesize: 8
+  method: rtu
+  parity: E
+  port: /dev/ttyUSB0
+  stopbits: 1
   sensors:
-    - name: "PV1-Voltage"
-      unique_id: foxess_inv1_pv1_voltage
-      scan_interval: 30
-      slave: 247
-      address: 11000
-      state_class: measurement
-      unit_of_measurement: "V"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      input_type: input
+      - name: "Voltage"
+      unique_id: V
       device_class: voltage
-    - name: "PV1-Current"
-      unique_id: foxess_inv1_pv1_current
-      scan_interval: 30
-      slave: 247
-      address: 11001
       state_class: measurement
-      unit_of_measurement: "A"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      input_type: input
-      device_class: current
-    - name: "PV1-Power"
-      unique_id: foxess_inv1_pv1_power
-      scan_interval: 5
-      slave: 247
-      address: 11002
-      state_class: measurement
-      unit_of_measurement: "kW"
-      data_type: int16
-      scale: 0.001
-      precision: 3
-      input_type: input
-      device_class: power
-    - name: "PV2-Voltage"
-      unique_id: foxess_inv1_pv2_voltage
-      scan_interval: 30
-      slave: 247
-      address: 11003
-      state_class: measurement
-      unit_of_measurement: "V"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      input_type: input
-      device_class: voltage
-    - name: "PV2-Current"
-      unique_id: foxess_inv1_pv2_current
-      scan_interval: 30
-      slave: 247
-      address: 11004
-      state_class: measurement
-      unit_of_measurement: "A"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      input_type: input
-      device_class: current
-    - name: "PV2-Power"
-      unique_id: foxess_inv1_pv2_power
-      scan_interval: 5
-      slave: 247
-      address: 11005
-      state_class: measurement
-      unit_of_measurement: "kW"
-      data_type: int16
-      scale: 0.001
-      precision: 3
-      input_type: input
-      device_class: power
-    - name: "Battery-SoC"
-      unique_id: foxess_inv1_battery_soc
-      scan_interval: 30
-      slave: 247
-      address: 11036
-      state_class: measurement
-      unit_of_measurement: "%"
-      data_type: int16
-      input_type: input
-      device_class: battery
-    - name: "Battery-Temp"
-      unique_id: foxess_inv1_battery_temperature
-      scan_interval: 60
-      slave: 247
-      address: 11038
-      state_class: measurement
-      unit_of_measurement: "°C"
-      scale: 0.1
-      precision: 1
-      data_type: int16
-      input_type: input
-      device_class: temperature
-    - name: "Battery-Discharge-Power"
-      unique_id: foxess_inv1_battery_power
-      scan_interval: 5
-      slave: 247
-      address: 11008
-      state_class: measurement
-      unit_of_measurement: "kW"
-      data_type: int16
-      scale: 0.001
-      precision: 3
-      input_type: input
-      device_class: power
-    - name: "Load Power"
-      unique_id: foxess_inv1_load_power
-      scan_interval: 5
-      slave: 247
-      address: 11023
-      state_class: measurement
-      unit_of_measurement: "kW"
-      data_type: int16
-      scale: 0.001
-      precision: 3
-      input_type: input
-      device_class: power
-    - name: "InvBatVolt"
-      unique_id: foxess_inv1_inverter_battery_voltage
-      scan_interval: 30
-      slave: 247
-      address: 11006
-      state_class: measurement
-      unit_of_measurement: "V"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      input_type: input
-    - name: "InvBatPower"
-      unique_id: foxess_inv1_inverter_battery_power
-      scan_interval: 5
-      slave: 247
-      address: 11007
-      state_class: measurement
-      unit_of_measurement: "kW"
-      data_type: int16
-      scale: 0.01
       precision: 2
-      input_type: input
-    - name: "RVolt"
-      unique_id: foxess_inv1_grid_voltage_R
-      scan_interval: 30
-      slave: 247
-      address: 11009
-      state_class: measurement
+      address: 0x5000
+      input_type: holding
+      count: 2
+      data_type: float32
       unit_of_measurement: "V"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      input_type: input
+      slave: 2
+      scan_interval: 60
+
+    - name: "L1 Voltage"
+      unique_id: L1V
       device_class: voltage
-    - name: "RCurrent"
-      unique_id: foxess_inv1_inv_current_R
-      scan_interval: 30
-      slave: 247
-      address: 11010
       state_class: measurement
-      unit_of_measurement: "A"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      input_type: input
-      device_class: current
-    - name: "RFreq"
-      unique_id: foxess_inv1_grid_frequency
-      scan_interval: 30
-      slave: 247
-      address: 11014
+      precision: 2
+      address: 0x5002
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "V"
+      slave: 2
+      scan_interval: 60
+
+    - name: "L2 Voltage"
+      unique_id: L2V
+      device_class: voltage
       state_class: measurement
-      unit_of_measurement: "Hz"
-      data_type: int16
-      scale: 0.01
-      precision: 3
-      input_type: input
+      precision: 2
+      address: 0x5004
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "V"
+      slave: 2
+      scan_interval: 60
+
+    - name: "L3 Voltage"
+      unique_id: L3V
+      device_class: voltage
+      state_class: measurement
+      precision: 2
+      address: 0x5006
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "V"
+      slave: 2
+      scan_interval: 60
+
+    - name: "Grid frequency"
+      unique_id: Hz
       device_class: frequency
-    - name: "EPS RVolt"
-      unique_id: foxess_inv1_eps_rvolt
-      scan_interval: 30
-      slave: 247
-      address: 11015
       state_class: measurement
-      unit_of_measurement: "V"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      input_type: input
-    - name: "Grid CT"
-      unique_id: foxess_inv1_grid_ct
-      scan_interval: 5
-      slave: 247
-      address: 11021
-      state_class: measurement
-      unit_of_measurement: "kW"
-      data_type: int16
-      scale: 0.001
-      precision: 3
-      input_type: input
-    - name: "CT2 Meter"
-      unique_id: foxess_inv1_ct2
-      scan_interval: 1
-      slave: 247
-      address: 11022
-      state_class: measurement
-      unit_of_measurement: "kW"
-      data_type: int16
-      scale: 0.001
-      precision: 3
-      input_type: input
-    - name: "InvTemp"
-      unique_id: foxess_inv1_inverter_temperature
-      scan_interval: 30
-      slave: 247
-      address: 11024
-      state_class: measurement
-      unit_of_measurement: "°C"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      device_class: temperature
-      input_type: input
-    - name: "AmbTemp"
-      unique_id: foxess_inv1_ambient_temperature
-      scan_interval: 30
-      slave: 247
-      address: 11025
-      state_class: measurement
-      unit_of_measurement: "°C"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      device_class: temperature
-      input_type: input
-    - name: "BatVolt"
-      unique_id: foxess_inv1_battery_voltage
-      scan_interval: 30
-      slave: 247
-      address: 11034
-      state_class: measurement
-      unit_of_measurement: "V"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      device_class: voltage
-      input_type: input
-    - name: "Temp"
-      unique_id: foxess_inv1_temperature
-      scan_interval: 30
-      slave: 247
-      address: 11035
-      state_class: measurement
-      unit_of_measurement: "°C"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      device_class: temperature
-      input_type: input
-    - name: "Min SoC"
-      unique_id: foxess_inv1_min_soc
-      scan_interval: 60
-      slave: 247
-      address: 41009
-      state_class: measurement
-      unit_of_measurement: "%"
-      data_type: int16
-      input_type: input
-      device_class: battery
-    - name: "Min SoC (On Grid)"
-      unique_id: foxess_inv1_min_soc_on_grid
-      scan_interval: 60
-      slave: 247
-      address: 41011
-      state_class: measurement
-      unit_of_measurement: "%"
-      data_type: int16
-      input_type: input
-      device_class: battery
-    - name: "Time Period 1 - Start"
-      unique_id: foxess_inv1_time_period_1_start
-      address: 41002
-      scan_interval: 60
-      slave: 247
-      input_type: input
-    - name: "Time Period 1 - End"
-      unique_id: foxess_inv1_time_period_1_end
-      address: 41003
-      scan_interval: 60
-      slave: 247
-      input_type: input
-    - name: "Time Period 2 - Start"
-      unique_id: foxess_inv1_time_period_2_start
-      address: 41005
-      scan_interval: 60
-      slave: 247
-      input_type: input
-    - name: "Time Period 2 - End"
-      unique_id: foxess_inv1_time_period_2_end
-      address: 41006
-      scan_interval: 60
-      slave: 247
-      input_type: input
-
-    - name: "BMS Cell mV High"
-      unique_id: foxess_inv1_bms_cell_mv_high
-      address: 11045
-      scan_interval: 5
-      slave: 247
-      input_type: input
-      device_class: voltage
-      unit_of_measurement: "mV"
-    - name: "BMS Cell mV Low"
-      unique_id: foxess_inv1_bms_cell_low
-      address: 11046
-      scan_interval: 5
-      slave: 247
-      input_type: input
-      device_class: voltage
-      unit_of_measurement: "mV"
-    - name: "BMS Charge Rate"
-      unique_id: foxess_inv1_bms_charge_rate
-      address: 11041
-      scan_interval: 30
-      slave: 247
-      input_type: input
-      device_class: current
-      unit_of_measurement: "A"
-      scale: 0.1
-    - name: "BMS Discharge Rate"
-      unique_id: foxess_inv1_bms_discharge_rate
-      address: 11042
-      scan_interval: 30
-      slave: 247
-      input_type: input
-      device_class: current
-      unit_of_measurement: "A"
-      scale: 0.1
-    - name: "BMS Cell Temp Low"
-      unique_id: foxess_inv1_bms_cell_temperature_low
-      scan_interval: 30
-      slave: 247
-      address: 11044
-      state_class: measurement
-      unit_of_measurement: "°C"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      device_class: temperature
-      input_type: input
-    - name: "BMS Cell Temp High"
-      unique_id: foxess_inv1_bms_cell_temperature_high
-      scan_interval: 30
-      slave: 247
-      address: 11043
-      state_class: measurement
-      unit_of_measurement: "°C"
-      data_type: int16
-      scale: 0.1
-      precision: 1
-      device_class: temperature
-      input_type: input
-    - name: "BMS Watthours Total"
-      unique_id: foxess_inv1_bms_watthours_total
-      address: 11049
-      scan_interval: 60
-      slave: 247
-      input_type: input
-      unit_of_measurement: "Ah"
-      device_class: energy
-    - name: "BMS kWh Remaining"
-      unique_id: foxess_inv1_bms_kwh_remaining
-      address: 11037
-      scan_interval: 60
-      slave: 247
-      input_type: input
-      scale: 0.01
       precision: 2
-      device_class: energy
-      unit_of_measurement: "kWh"
+      address: 0x5008
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "Hz"
+      slave: 2
+      scan_interval: 60
 
-  binary_sensors:
-    - name: "Time Period 1 - Enabled"
-      unique_id: foxess_inv1_time_period_1_enabled
-      address: 41001
+    - name: "Current"
+      unique_id: A
+      device_class: current
+      state_class: measurement
+      precision: 2
+      address: 0x500A
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "A"
+      slave: 2
       scan_interval: 60
-      slave: 247
-      input_type: input
-    - name: "Time Period 2 - Enabled"
-      unique_id: foxess_inv1_time_period_2_enabled
-      address: 41004
+
+    - name: "L1 Current"
+      unique_id: L1A
+      device_class: current
+      state_class: measurement
+      precision: 2
+      address: 0x500C
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "A"
+      slave: 2
       scan_interval: 60
-      slave: 247
+
+    - name: "L2 Current"
+      unique_id: L2A
+      device_class: current
+      state_class: measurement
+      precision: 2
+      address: 0x500E
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "A"
+      slave: 2
+      scan_interval: 60
+
+    - name: "L3 Current"
+      unique_id: L3A
+      device_class: current
+      state_class: measurement
+      precision: 2
+      address: 0x5010
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "A"
+      slave: 2
+      scan_interval: 60
+
+    - name: "Total active power"
+      unique_id: TAP
+      device_class: power
+      state_class: measurement
+      precision: 2
+      address: 0x5012
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kW"
+      slave: 2
+      scan_interval: 60
+      
+    - name: "L1 Active power"
+      unique_id: TAP L1
+      device_class: power
+      state_class: measurement
+      precision: 2
+      address: 0x5014
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kW"
+      slave: 2
+      scan_interval: 60
+
+    - name: "L2 Active power"
+      unique_id: TAP L2
+      device_class: power
+      state_class: measurement
+      precision: 2
+      address: 0x5016
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kW"
+      slave: 2
+      scan_interval: 60
+
+    - name: "L3 Active power"
+      unique_id: TAP L3
+      device_class: power
+      state_class: measurement
+      precision: 2
+      address: 0x5018
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kW"
+      slave: 2
+      scan_interval: 60
+
+    - name: "Total reactive power"
+      unique_id: TRP
+      device_class: power
+      state_class: measurement
+      precision: 2
+      address: 0x501A
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kVAr"
+      slave: 2
+      scan_interval: 60
+
+    - name: "L1 Reactive power"
+      unique_id: TRP L1
+      device_class: power
+      state_class: measurement
+      precision: 2
+      address: 0x501C
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kVAr"
+      slave: 2
+      scan_interval: 60
+
+    - name: "L2 Reactive power"
+      unique_id: TRP L2
+      device_class: power
+      state_class: measurement
+      precision: 2
+      address: 0x501E
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kVAr"
+      slave: 2
+      scan_interval: 60
+
+    - name: "L3 Reactive power"
+      unique_id: TRP L3
+      device_class: power
+      state_class: measurement
+      precision: 2
+      address: 0x5020
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kVAr"
+      slave: 2
+      scan_interval: 60
+
+    - name: "Total apparent power"
+      unique_id: TApP
+      device_class: power
+      state_class: measurement
+      precision: 2
+      address: 0x5022
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kVA"
+      slave: 2
+      scan_interval: 60
+
+    - name: "L1 Apparent power"
+      unique_id: TApP L1
+      device_class: power
+      state_class: measurement
+      precision: 2
+      address: 0x5024
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kVA"
+      slave: 2
+      scan_interval: 60
+
+     - name: "L2 Apparent power"
+      unique_id: TApP L2
+      device_class: power
+      state_class: measurement
+      precision: 2
+      address: 0x5026
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kVA"
+      slave: 2
+      scan_interval: 60     
+
+     - name: "L3 Apparent power"
+      unique_id: TApP L3
+      device_class: power
+      state_class: measurement
+      precision: 2
+      address: 0x5028
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kVA"
+      slave: 2
+      scan_interval: 60 
+
+    - name: "Power factor"
+      unique_id: COSFI
+      device_class: power_factor
+      state_class: measurement
+      precision: 2
+      address: 0x502A
+      input_type: holding
+      count: 2
+      data_type: float32
+      slave: 2
+      scan_interval: 60
+
+    - name: "L1 Power factor"
+      unique_id: COSFI L1
+      device_class: power_factor
+      state_class: measurement
+      precision: 2
+      address: 0x502C
+      input_type: holding
+      count: 2
+      data_type: float32
+      slave: 2
+      scan_interval: 60
+
+    - name: "L2 Power factor"
+      unique_id: COSFI L2
+      device_class: power_factor
+      state_class: measurement
+      precision: 2
+      address: 0x502E
+      input_type: holding
+      count: 2
+      data_type: float32
+      slave: 2
+      scan_interval: 60
+
+    - name: "L3 Power factor"
+      unique_id: COSFI L3
+      device_class: power_factor
+      state_class: measurement
+      precision: 2
+      address: 0x5030
+      input_type: holding
+      count: 2
+      data_type: float32
+      slave: 2
+      scan_interval: 60
+
+    - name: "Total active energy"
+      unique_id: TAE
+      device_class: energy
+      state_class: total_increasing
+      precision: 2
+      address: 0x6000
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kWh"
+      slave: 2
+      scan_interval: 60
+
+    - name: "Forward active energy"
+      unique_id: FAE
+      device_class: energy
+      state_class: total_increasing
+      precision: 2
+      address: 0x600C
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kWh"
+      slave: 2
+      scan_interval: 60
+
+    - name: "Reverse active energy"
+      unique_id: RAE
+      device_class: energy
+      state_class: total_increasing
+      precision: 2
+      address: 0x6018
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kWh"
+      slave: 2
+      scan_interval: 60
+
+    - name: "Total reactive energy"
+      unique_id: TRE
+      device_class: energy
+      state_class: total_increasing
+      precision: 2
+      address: 0x6024
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kVArh"
+      slave: 2
+      scan_interval: 60
+
+    - name: "Forward reactive energy"
+      unique_id: FRE
+      device_class: energy
+      state_class: total_increasing
+      precision: 2
+      address: 0x6030
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kVArh"
+      slave: 2
+      scan_interval: 60
+
+    - name: "Reverse reactive energy "
+      unique_id: RRE
+      device_class: energy
+      state_class: total_increasing
+      precision: 2
+      address: 0x603C
+      input_type: holding
+      count: 2
+      data_type: float32
+      unit_of_measurement: "kVArh"
+      slave: 2
+      scan_interval: 60
+
+    - name: "Tariff"
+      unique_id: Tariff
+      scan_interval: 10
+      slave: 2
+      address: 0x6048
       input_type: input
+      count: 1
+      data_type: custom
+      structure: ">Bx"
 
   # !include sensors.yaml

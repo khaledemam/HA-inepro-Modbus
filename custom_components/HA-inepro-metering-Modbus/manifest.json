@@ -1,5 +1,4 @@
 {
-    "domain": "HA-inepro-metering-Modbus",
     "name": "Inepro Metering Modbus Integration",
     "documentation": "https://github.com/khaledemam/HA-inepro-Modbus/",
     "issue_tracker": "https://github.com/khaledemam/HA-inepro-Modbus/issues",

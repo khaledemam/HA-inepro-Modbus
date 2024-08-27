@@ -1,0 +1,11 @@
+{
+    "domain": "inepro-metering-modbus",
+    "name": "Inepro Metering Modbus Integration",
+    "documentation": "https://github.com/khaledemam/HA-inepro-Modbus/",
+    "issue_tracker": "https://github.com/khaledemam/HA-inepro-Modbus/issues",
+    "dependencies": [],
+    "codeowners": ["@khaledemam"],
+    "requirements": [],
+    "iot_class": "local_polling",
+    "version": "1.0.0"
+}

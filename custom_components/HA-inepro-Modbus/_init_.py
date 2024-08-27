@@ -1,4 +1,4 @@
-"""GitHub Custom Component."""
+"""HA-inepro-Modbus"""
 import asyncio
 import logging
 

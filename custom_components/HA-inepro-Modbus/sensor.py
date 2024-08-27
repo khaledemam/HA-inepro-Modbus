@@ -1,68 +1,60 @@
-"""Platform for HA-inepro-Modbus sensors."""
-
-from __future__ import annotations
-
-import logging
-from typing import Any
-
 from homeassistant.components.sensor import SensorEntity
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
-
-from .modbus_instance import ModbusRTUInstance, ModbusTCPInstance
-
-_LOGGER = logging.getLogger(__name__)
-
-def setup_platform(
-    hass: HomeAssistant,
-    config: ConfigType,
-    add_entities: AddEntitiesCallback,
-    discovery_info: DiscoveryInfoType | None = None
-) -> None:
-    """Set up the HA-inepro-Modbus sensor platform."""
-    if discovery_info is None:
-        return
-
-    sensors = hass.data.get('ha_inepro_modbus_sensors', {}).get(hass.config_entries.async_current_entry.entry_id, [])
-    
-    entities = [ModbusSensor(sensor) for sensor in sensors]
-    add_entities(entities)
+from .const import SENSOR_LIST, DOMAIN
 
 class ModbusSensor(SensorEntity):
-    """Representation of a HA-inepro-Modbus sensor."""
+    """Representation of a Modbus sensor."""
 
-    def __init__(self, sensor_config: dict) -> None:
+    def __init__(self, config, slave_id):
         """Initialize the sensor."""
-        self._name = sensor_config.get("name")
-        self._address = sensor_config.get("address")
-        self._unit_of_measurement = sensor_config.get("unit_of_measurement")
-        self._modbus_instance = self._create_modbus_instance(sensor_config)
+        self._name = f"{config['name']} ({slave_id})"
+        self._unique_id = f"{config['unique_id']}_{slave_id}"
+        self._device_class = config.get("device_class")
+        self._state_class = config.get("state_class")
+        self._precision = config.get("precision", 2)
+        self._address = config["address"]
+        self._input_type = config.get("input_type", "holding")
+        self._count = config.get("count", 2)
+        self._data_type = config.get("data_type", "float32")
+        self._unit_of_measurement = config.get("unit_of_measurement")
+        self._slave_id = slave_id
+        self._scan_interval = config.get("scan_interval", 5)
         self._state = None
 
+    async def async_update(self):
+        """Fetch new state data for this sensor."""
+        # Implement the data fetching logic using the Modbus client.
+        # This should update self._state with the latest value.
+        pass
+
     @property
-    def name(self) -> str:
-        """Return the name of the sensor."""
+    def name(self):
         return self._name
 
     @property
-    def state(self) -> Any:
-        """Return the state of the sensor."""
+    def unique_id(self):
+        return self._unique_id
+
+    @property
+    def state(self):
         return self._state
 
     @property
-    def unit_of_measurement(self) -> str | None:
-        """Return the unit of measurement."""
+    def device_class(self):
+        return self._device_class
+
+    @property
+    def state_class(self):
+        return self._state_class
+
+    @property
+    def unit_of_measurement(self):
         return self._unit_of_measurement
 
-    def _create_modbus_instance(self, sensor_config: dict):
-        """Create and return the Modbus instance."""
-        modbus_type = sensor_config.get("type")
-        if modbus_type == "tcp":
-            return ModbusTCPInstance(sensor_config)
-        else:
-            return ModbusRTUInstance(sensor_config)
+def setup_platform(hass, config, add_entities, discovery_info=None):
+    """Set up the sensor platform."""
+    if discovery_info is None:
+        return
 
-    async def async_update(self) -> None:
-        """Fetch new state data for this sensor."""
-        self._state = await self._modbus_instance.read(self._address)
+    slave_id = discovery_info["slave_id"]
+    sensors = [ModbusSensor(sensor_config, slave_id) for sensor_config in SENSOR_LIST]
+    add_entities(sensors)

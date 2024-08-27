@@ -18,10 +18,11 @@ class ModbusRTUInstance:
             bytesize=config.get("bytesize", 8)
         )
         self._client.connect()
+        self._slave_id = config.get("slave_id", 1)
 
     async def read(self, address: int) -> float:
         """Read a register."""
-        response = self._client.read_holding_registers(address, 2)
+        response = self._client.read_holding_registers(address, 2, unit=self._slave_id)
         if response.isError():
             _LOGGER.error("Error reading Modbus register")
             return None

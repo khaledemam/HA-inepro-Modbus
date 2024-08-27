@@ -1,46 +1,46 @@
-"""Modbus Instance classes for TCP and RTU connections."""
+"""Modbus instance handling."""
 
 import logging
-import struct
-from typing import Any
+from pymodbus.client.sync import ModbusTcpClient, ModbusSerialClient
 
-_LOGGER = logging.getLogger("modbus")
+_LOGGER = logging.getLogger(__name__)
 
-class ModbusInstance:
-    """Base class for Modbus instances."""
+class ModbusRTUInstance:
+    """Modbus RTU client."""
 
-    def __init__(self, address: str, port: int = None) -> None:
-        self.address = address
-        self.port = port
+    def __init__(self, config: dict) -> None:
+        self._client = ModbusSerialClient(
+            method=config.get("method", "rtu"),
+            port=config.get("port"),
+            baudrate=config.get("baudrate", 9600),
+            parity=config.get("parity", "E"),
+            stopbits=config.get("stopbits", 1),
+            bytesize=config.get("bytesize", 8)
+        )
+        self._client.connect()
 
-    def read_register(self, address: int, count: int, data_type: str, slave: int) -> Any:
-        """Method to read data from the device."""
-        raise NotImplementedError("Subclasses should implement this method.")
+    async def read(self, address: int) -> float:
+        """Read a register."""
+        response = self._client.read_holding_registers(address, 2)
+        if response.isError():
+            _LOGGER.error("Error reading Modbus register")
+            return None
+        return response.registers[0]  # Adapt based on your register format
 
-class ModbusTCPInstance(ModbusInstance):
-    """Modbus TCP instance."""
+class ModbusTCPInstance:
+    """Modbus TCP client."""
 
-    def __init__(self, address: str, port: int = 502) -> None:
-        super().__init__(address, port)
-        # Initialize TCP connection here
+    def __init__(self, config: dict) -> None:
+        self._client = ModbusTcpClient(
+            host=config.get("address"),
+            port=config.get("port", 502)
+        )
+        self._client.connect()
 
-    def read_register(self, address: int, count: int, data_type: str, slave: int) -> Any:
-        """Read data from a Modbus TCP device."""
-        # Implement Modbus TCP read logic here
-        _LOGGER.debug(f"Reading {count} registers starting from {address} from Modbus TCP device at {self.address}:{self.port}")
-        # Example response
-        return b'\x00\x00\x00\x00'  # Replace with actual data read from the device
-
-class ModbusRTUInstance(ModbusInstance):
-    """Modbus RTU instance."""
-
-    def __init__(self, address: str) -> None:
-        super().__init__(address)
-        # Initialize RTU connection here
-
-    def read_register(self, address: int, count: int, data_type: str, slave: int) -> Any:
-        """Read data from a Modbus RTU device."""
-        # Implement Modbus RTU read logic here
-        _LOGGER.debug(f"Reading {count} registers starting from {address} from Modbus RTU device at {self.address}")
-        # Example response
-        return b'\x00\x00\x00\x00'  # Replace with actual data read from the device
+    async def read(self, address: int) -> float:
+        """Read a register."""
+        response = self._client.read_holding_registers(address, 2)
+        if response.isError():
+            _LOGGER.error("Error reading Modbus register")
+            return None
+        return response.registers[0]  # Adapt based on your register format

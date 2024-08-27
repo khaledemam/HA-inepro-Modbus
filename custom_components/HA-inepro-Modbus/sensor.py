@@ -1,4 +1,7 @@
 from homeassistant.components.sensor import SensorEntity
+from homeassistant.const import CONF_NAME
+from pymodbus.payload import BinaryPayloadDecoder
+from pymodbus.constants import Endian
 from .const import SENSOR_LIST, DOMAIN
 
 class ModbusSensor(SensorEntity):
@@ -19,12 +22,44 @@ class ModbusSensor(SensorEntity):
         self._slave_id = slave_id
         self._scan_interval = config.get("scan_interval", 5)
         self._state = None
+        self._client = None
+
+    async def async_added_to_hass(self):
+        """Set up the Modbus client when the entity is added to Home Assistant."""
+        self._client = self.hass.data[DOMAIN]["client"]
 
     async def async_update(self):
         """Fetch new state data for this sensor."""
-        # Implement the data fetching logic using the Modbus client.
-        # This should update self._state with the latest value.
-        pass
+        try:
+            # Read data from the Modbus device
+            if self._input_type == "holding":
+                result = await self.hass.async_add_executor_job(
+                    self._client.read_holding_registers,
+                    self._address,
+                    self._count,
+                    unit=self._slave_id
+                )
+            else:
+                # Implement other input types if needed
+                return
+
+            if result.isError():
+                raise Exception(f"Error reading Modbus data: {result}")
+
+            # Decode the result based on the specified data type
+            decoder = BinaryPayloadDecoder.fromRegisters(result.registers, Endian.Big)
+            if self._data_type == "float32":
+                self._state = round(decoder.decode_32bit_float(), self._precision)
+            elif self._data_type == "int16":
+                self._state = decoder.decode_16bit_int()
+            elif self._data_type == "uint16":
+                self._state = decoder.decode_16bit_uint()
+            else:
+                raise Exception(f"Unsupported data type: {self._data_type}")
+
+        except Exception as e:
+            self._state = None
+            self._logger.error(f"Failed to update Modbus sensor {self._name}: {e}")
 
     @property
     def name(self):

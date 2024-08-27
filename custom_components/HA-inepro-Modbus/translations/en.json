@@ -1,4 +1,19 @@
 {
-  "title": "HA-inepro-Modbus Integration",
-  "description": "Configure HA-inepro-Modbus sensors for Home Assistant."
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Modbus Device",
+        "description": "Please enter the device details.",
+        "data": {
+          "usb_port": "USB Port",
+          "baudrate": "Baudrate",
+          "parity": "Parity",
+          "slave_id": "Slave ID"
+        }
+      }
+    },
+    "error": {
+      "invalid_port": "Invalid USB port."
+    }
+  }
 }

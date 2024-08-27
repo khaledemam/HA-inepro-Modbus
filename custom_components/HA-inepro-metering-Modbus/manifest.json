@@ -1,4 +1,4 @@
-r{
+{
     "domain": "inepro-metering-modbus",
     "name": "Inepro Metering Modbus Integration",
     "documentation": "https://github.com/khaledemam/HA-inepro-Modbus/",

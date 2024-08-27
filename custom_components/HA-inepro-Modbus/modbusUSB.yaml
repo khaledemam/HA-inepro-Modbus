@@ -1,19 +1,24 @@
---- # ---------------------------USB/Serial--------------------------------------
-# Created by https://github.com/khaledemam/HA-inepro-Modbus/
+# -----------------------------------------------------------------------------
+# USB/Serial Configuration
+# -----------------------------------------------------------------------------
 # Modbus Config for inepro meter PRO380
-# Adjust port setting to match USB port in use
-# "modbus ID" setting can be changed on meter Menu - Settings, Communication, RS485 but is default to 1 from factory
+# Created by: https://github.com/khaledemam/HA-inepro-Modbus/
+# Adjust port settings to match the USB port in use.
+# The "modbus ID" setting can be changed on the meter via Menu -> Settings -> 
+# Communication -> RS485 (default is 1 from factory).
+# -----------------------------------------------------------------------------
 
-  # ---------------------------------------------------------------------------
-
-  # ---------------------------WIFI/LAN----------------------------------------
-  # If using USR Wifi converter, remove lines 6 through 13 and uncomment the following
-  #
-  #- name: Ambition Modbus TCP
-  #  type: tcp
-  #  host: 192.168.XXX.XXX # set to USR devices ip address
-  #  port: 502
-  # ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# WIFI/LAN Configuration (USR Wifi Converter)
+# -----------------------------------------------------------------------------
+# If using a USR WiFi converter, remove lines 6 through 13 and uncomment the 
+# following block.
+#
+# - name: Ambition Modbus TCP
+#   type: tcp
+#   host: 192.168.XXX.XXX  # Set to USR device's IP address
+#   port: 502
+# -----------------------------------------------------------------------------
 
 - name: PRO380-MOD
   type: serial
@@ -24,7 +29,7 @@
   port: /dev/ttyUSB0
   stopbits: 1
   sensors:
-      - name: "Voltage"
+    - name: "Voltage"
       unique_id: V
       device_class: voltage
       state_class: measurement
@@ -153,9 +158,9 @@
       unit_of_measurement: "kW"
       slave: 2
       scan_interval: 60
-      
+
     - name: "L1 Active power"
-      unique_id: TAP L1
+      unique_id: TAP_L1
       device_class: power
       state_class: measurement
       precision: 2
@@ -168,7 +173,7 @@
       scan_interval: 60
 
     - name: "L2 Active power"
-      unique_id: TAP L2
+      unique_id: TAP_L2
       device_class: power
       state_class: measurement
       precision: 2
@@ -181,7 +186,7 @@
       scan_interval: 60
 
     - name: "L3 Active power"
-      unique_id: TAP L3
+      unique_id: TAP_L3
       device_class: power
       state_class: measurement
       precision: 2
@@ -207,7 +212,7 @@
       scan_interval: 60
 
     - name: "L1 Reactive power"
-      unique_id: TRP L1
+      unique_id: TRP_L1
       device_class: power
       state_class: measurement
       precision: 2
@@ -220,7 +225,7 @@
       scan_interval: 60
 
     - name: "L2 Reactive power"
-      unique_id: TRP L2
+      unique_id: TRP_L2
       device_class: power
       state_class: measurement
       precision: 2
@@ -233,7 +238,7 @@
       scan_interval: 60
 
     - name: "L3 Reactive power"
-      unique_id: TRP L3
+      unique_id: TRP_L3
       device_class: power
       state_class: measurement
       precision: 2
@@ -259,7 +264,7 @@
       scan_interval: 60
 
     - name: "L1 Apparent power"
-      unique_id: TApP L1
+      unique_id: TApP_L1
       device_class: power
       state_class: measurement
       precision: 2
@@ -271,8 +276,8 @@
       slave: 2
       scan_interval: 60
 
-     - name: "L2 Apparent power"
-      unique_id: TApP L2
+    - name: "L2 Apparent power"
+      unique_id: TApP_L2
       device_class: power
       state_class: measurement
       precision: 2
@@ -284,8 +289,8 @@
       slave: 2
       scan_interval: 60     
 
-     - name: "L3 Apparent power"
-      unique_id: TApP L3
+    - name: "L3 Apparent power"
+      unique_id: TApP_L3
       device_class: power
       state_class: measurement
       precision: 2
@@ -295,10 +300,10 @@
       data_type: float32
       unit_of_measurement: "kVA"
       slave: 2
-      scan_interval: 60 
+      scan_interval: 60     
 
     - name: "Power factor"
-      unique_id: COSFI
+      unique_id: PF
       device_class: power_factor
       state_class: measurement
       precision: 2
@@ -306,11 +311,12 @@
       input_type: holding
       count: 2
       data_type: float32
+      unit_of_measurement: "PF"
       slave: 2
-      scan_interval: 60
+      scan_interval: 60 
 
-    - name: "L1 Power factor"
-      unique_id: COSFI L1
+    - name: "Power factor L1"
+      unique_id: PF_L1
       device_class: power_factor
       state_class: measurement
       precision: 2
@@ -318,11 +324,12 @@
       input_type: holding
       count: 2
       data_type: float32
+      unit_of_measurement: "PF"
       slave: 2
-      scan_interval: 60
+      scan_interval: 60 
 
-    - name: "L2 Power factor"
-      unique_id: COSFI L2
+    - name: "Power factor L2"
+      unique_id: PF_L2
       device_class: power_factor
       state_class: measurement
       precision: 2
@@ -330,11 +337,12 @@
       input_type: holding
       count: 2
       data_type: float32
+      unit_of_measurement: "PF"
       slave: 2
-      scan_interval: 60
+      scan_interval: 60 
 
-    - name: "L3 Power factor"
-      unique_id: COSFI L3
+    - name: "Power factor L3"
+      unique_id: PF_L3
       device_class: power_factor
       state_class: measurement
       precision: 2
@@ -342,95 +350,58 @@
       input_type: holding
       count: 2
       data_type: float32
+      unit_of_measurement: "PF"
       slave: 2
-      scan_interval: 60
+      scan_interval: 60 
 
-    - name: "Total active energy"
+    - name: "Total Active energy"
       unique_id: TAE
       device_class: energy
       state_class: total_increasing
       precision: 2
-      address: 0x6000
+      address: 0x5400
       input_type: holding
       count: 2
       data_type: float32
       unit_of_measurement: "kWh"
       slave: 2
-      scan_interval: 60
+      scan_interval: 60 
 
-    - name: "Forward active energy"
-      unique_id: FAE
+    - name: "L1 Active energy"
+      unique_id: TAE_L1
       device_class: energy
       state_class: total_increasing
       precision: 2
-      address: 0x600C
+      address: 0x5402
       input_type: holding
       count: 2
       data_type: float32
       unit_of_measurement: "kWh"
       slave: 2
-      scan_interval: 60
+      scan_interval: 60 
 
-    - name: "Reverse active energy"
-      unique_id: RAE
+    - name: "L2 Active energy"
+      unique_id: TAE_L2
       device_class: energy
       state_class: total_increasing
       precision: 2
-      address: 0x6018
+      address: 0x5404
       input_type: holding
       count: 2
       data_type: float32
       unit_of_measurement: "kWh"
       slave: 2
-      scan_interval: 60
+      scan_interval: 60 
 
-    - name: "Total reactive energy"
-      unique_id: TRE
+    - name: "L3 Active energy"
+      unique_id: TAE_L3
       device_class: energy
       state_class: total_increasing
       precision: 2
-      address: 0x6024
+      address: 0x5406
       input_type: holding
       count: 2
       data_type: float32
-      unit_of_measurement: "kVArh"
+      unit_of_measurement: "kWh"
       slave: 2
-      scan_interval: 60
-
-    - name: "Forward reactive energy"
-      unique_id: FRE
-      device_class: energy
-      state_class: total_increasing
-      precision: 2
-      address: 0x6030
-      input_type: holding
-      count: 2
-      data_type: float32
-      unit_of_measurement: "kVArh"
-      slave: 2
-      scan_interval: 60
-
-    - name: "Reverse reactive energy "
-      unique_id: RRE
-      device_class: energy
-      state_class: total_increasing
-      precision: 2
-      address: 0x603C
-      input_type: holding
-      count: 2
-      data_type: float32
-      unit_of_measurement: "kVArh"
-      slave: 2
-      scan_interval: 60
-
-    - name: "Tariff"
-      unique_id: Tariff
-      scan_interval: 10
-      slave: 2
-      address: 0x6048
-      input_type: input
-      count: 1
-      data_type: custom
-      structure: ">Bx"
-
-  # !include sensors.yaml
+      scan_interval: 60 

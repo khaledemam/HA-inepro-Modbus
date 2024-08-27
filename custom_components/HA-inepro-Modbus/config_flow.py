@@ -2,8 +2,11 @@
 
 from typing import Any, Dict
 
-from homeassistant import config_entries
 import voluptuous as vol
+from homeassistant import config_entries
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import config_validation as cv
 
 from .const import DOMAIN
 
@@ -28,6 +31,9 @@ class ModbusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 "address": user_input['address'],
                 "port": user_input['port'],
                 "type": user_input['type'],
+                "baudrate": user_input.get('baudrate', 9600),
+                "parity": user_input.get('parity', "E"),
+                "slave_id": user_input.get('slave_id', 1),
                 'sensors': self._get_sensors()  # Retrieve or configure sensors
             }
         )
@@ -39,6 +45,9 @@ class ModbusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             vol.Required('address'): str,
             vol.Required('port'): int,
             vol.Required('type', default="serial"): vol.In(["serial", "tcp"]),
+            vol.Optional('baudrate', default=9600): int,
+            vol.Optional('parity', default="E"): vol.In(["N", "E", "O"]),
+            vol.Optional('slave_id', default=1): int,
         })
 
     def _get_sensors(self):

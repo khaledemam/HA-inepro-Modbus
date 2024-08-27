@@ -3,9 +3,9 @@
     "name": "Inepro Metering Modbus Integration",
     "codeowners": ["@khaledemam"],
     "dependencies": [],
-    "documentation": "https://github.com/khaledemam/HA-inepro-Modbus/",
+    "documentation": "https://github.com/khaledemam/HASS-inepro-Modbus/",
     "iot_class": "local_polling",
-    "issue_tracker": "https://github.com/khaledemam/HA-inepro-Modbus/issues",
+    "issue_tracker": "https://github.com/khaledemam/HASS-inepro-Modbus/issues",
     "requirements": ["pymodbus==3.1.1"]
     "version": "1.0.0"
 }

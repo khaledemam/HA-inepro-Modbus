@@ -258,4 +258,6 @@ SENSOR_LIST = [
         "input_type": "holding",
         "count": 2,
         "data_type": "float32",
-        "unit_of_measurement": "kVA
+        "unit_of_measurement": "kVA"
+    }
+]
